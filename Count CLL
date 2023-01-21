@@ -1,0 +1,82 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int info;
+    struct node* link;
+
+};
+typedef struct node* NODE;
+
+NODE getnode()
+
+{
+    NODE x;
+    x = (NODE)malloc(sizeof(struct node));
+    if (x == NULL)
+    {
+        printf("memory is not available");
+        exit(0);
+    }
+    return x;
+}
+
+
+int count(NODE last)//to count the number of elements 
+
+{
+    NODE cur;
+
+    int count = 1;
+    if (last == NULL)
+        return 0;
+
+    cur = last->link;
+    while (cur != last)
+    {
+        count++;
+        cur = cur->link;
+    }
+
+    return count;
+
+}
+NODE insert_front(NODE last, int elem)//to insert an element
+{
+    NODE temp;
+    temp = getnode();
+    temp->info = elem;
+    if (last == NULL)
+        last = temp;
+    else
+        temp->link = last->link;
+        last->link = temp;
+        return last;
+
+}
+
+int main()
+
+{
+    NODE last;
+    last = NULL;
+    int elem, res,ch;
+    while (1)
+    {
+        printf("enter 1 to insert\n  2 to count\n");
+        scanf_s("%d", &ch);
+        switch (ch)
+        {
+        case 1://to insert an element
+            printf("enter the element\n");
+            scanf_s ("%d", &elem);
+            last = insert_front(last, elem);
+            break;
+        case 2://to count the no of element
+            res = count(last);
+            printf("there are %d no. of nodes\n", res);
+            break;
+
+        }
+    }
+}
