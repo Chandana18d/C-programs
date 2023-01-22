@@ -1,0 +1,154 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int info;
+    struct node *link;
+
+};
+typedef struct node *NODE;
+    
+    NODE getnode()
+    
+    {
+        NODE x;
+        x=(NODE)malloc (sizeof (struct node));
+        if(x==NULL)
+        {
+            printf("memory is not available\n");
+            exit(0);
+        }
+        return x;
+    }
+
+NODE insert_front (NODE last ,int item )//function to insert an element at the front
+{
+    NODE  temp;
+    temp=getnode();
+    temp->info=item;
+    if(last==NULL)
+    last=temp;
+    else
+    temp->link=last->link;
+    last->link=temp;
+    return last;
+}
+
+NODE insert_rear(NODE last , int item)//function to insert an element at the rear
+{
+    NODE  temp;
+    temp=getnode();
+    temp->info=item;
+    if(last==NULL)
+    last =temp;
+    else 
+    temp->link=last->link;
+    last->link=temp;
+    return temp;
+}
+
+
+NODE delete_front(NODE last)//function to delete an element at the front
+{
+    NODE first;
+    if(last==NULL)
+    {
+        printf("the list is empty\n");
+        return NULL;
+    }
+    if (last->link==last)
+    {
+        printf("deleted item is %d\n",last->info);
+        free(last);
+        return NULL;
+        
+    }
+    first =last->link;
+    last->link=first->link;
+    printf("deleted element is %d\n",first->info);
+    free(first);
+    return last;
+
+}
+
+NODE delete_rear(NODE last)//function to delete an element at the rear
+    {
+        NODE prev;
+        if(last==NULL)
+        {
+            printf("the list is empty\n");
+            return NULL;
+            
+        }
+      if(last->link==last)
+      {
+          printf("deleted item is %d\n",last->info);
+          free(last);
+          return NULL;
+          
+      }
+      prev =last->link;
+      while(prev->link!=last)
+      prev=prev->link;
+      prev->link=last->link;
+      printf("element deleted is %d\n",last->info);
+      free(last);
+      return prev;
+      
+    }
+NODE display(NODE last)//function to display
+  {
+    if(last==NULL)
+    {
+        printf("no elements in the list\n");
+        return NULL;
+    }
+    NODE cur;
+    printf("contents of circular queue are :\n");
+    cur=last->link;
+    while(cur!=last)
+    {
+        printf("%d\n",cur->info);
+        cur=cur->link;
+        
+    }
+    printf("%d",cur->info);
+    
+  }
+
+int main()
+
+{
+    NODE last ;
+    last=NULL;
+    int item,ch;
+    while(1)
+    {
+        printf("enter 1 to insert at the front\n  2 to insert at the rear\n   3 to delete at the front\n  4 to delete at the rear\n   5 to display\n");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1:
+                     printf("enter the element\n");
+                     scanf("%d",&item);
+                     last=insert_front(last,item);
+                     break;
+            case 2:      
+                     printf("enter the element\n");
+                     scanf("%d",&item);
+                     last=insert_rear(last,item);
+                     break;
+            case 3 : 
+                    last=delete_front(last);
+                    break;
+            case 4: 
+                    last=delete_rear(last);
+                    break;
+            case 5:
+                    display(last);
+                    break;
+            
+        }
+    }
+}
