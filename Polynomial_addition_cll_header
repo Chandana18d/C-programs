@@ -1,0 +1,65 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct poly
+{
+	int cf, px, py, pz;
+	struct poly* link;
+};
+typedef struct poly* P;
+P getnode()
+{
+	P temp;
+	temp = (P)malloc(sizeof(struct poly));
+	if (temp == NULL)
+	{
+		printf("memory not allocated\n");
+		exit(0);
+	}
+	return temp;
+
+}
+
+void read_poly(P p1, int n)
+{
+	P temp, next;
+	int i;
+	for (i = 0; i < n; i++)
+	{
+		temp = getnode();
+		printf("enter the value of cf,px,py,pz\n");
+		scanf_s("%d%d%d%d", &(temp->cf), &(temp->px), &(temp->py), &(temp->pz));
+		next = p1->link;
+		p1->link = temp;
+		temp->link = next;
+
+	}
+}
+void display(P head)
+{
+	P cur;
+	
+printf("Elements of polynomial\n");
+cur = head->link;
+
+	while (cur!= head)
+	{
+		if (cur->cf >= 0)
+			printf("+%dx^%dy^%dz^%d\n", cur->cf, cur->px, cur->py, cur->pz);
+		else
+			printf("-%dx^%dy^%dz^%d\n", cur->cf, cur->px, cur->py, cur->pz);
+		cur = cur->link;
+	}
+	printf("\n");
+}
+int main()
+{
+	P p1;
+	int n;
+	p1 = getnode();
+	p1->link = p1;
+	printf("enter the terms of polynomial P1\n");
+	scanf_s("%d", &n);
+	read_poly(p1, n);
+	display(p1);
+
+}
